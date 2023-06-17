@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "yard/sig"
+require "yard-sig"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -13,3 +13,5 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+Dir["#{__dir__}/support/**/*.rb"].sort.each { |f| require f }
