@@ -10,7 +10,7 @@ Install the gem and add to the application's Gemfile by executing:
 
 Then specify it as an argument when running YARD.
 
-    $ yard doc --plugin sig
+    $ bundle exec yard doc --plugin sig
 
 ## Usage
 
@@ -25,7 +25,7 @@ class Foo
 end
 ```
 
-Using this directive will cause it to be replaced internally by @param and @return tags when YARD runs.
+Using this directive will cause it to be replaced internally by `@param` and `@return` tags when YARD runs.
 
 ## Development
 
