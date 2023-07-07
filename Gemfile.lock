@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    yard-sig (0.1.0)
+    yard-sig (0.2.0)
       rbs (>= 3.0)
       yard (>= 0.9)
 
