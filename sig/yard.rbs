@@ -1,0 +1,8 @@
+module YARD
+  module Tags
+    class Directive
+    end
+    class Tag
+    end
+  end
+end
