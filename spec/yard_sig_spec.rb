@@ -31,4 +31,19 @@ RSpec.describe YardSig do
 
     expect(log).to have_received(:warn).with("arguments forwarding is not supported.")
   end
+
+  it "does not cause errors within sord processing" do
+    YARD.parse_string(<<~RUBY)
+      # @!sig (Integer) -> void
+      def m(a); end
+    RUBY
+    obj = YARD::Registry.at("#m")
+
+    # refs: https://github.com/AaronC81/sord/blob/6.0.0/lib/sord/generator.rb#L174-L177
+    parser = YARD::Docstring.parser
+    parser.parse(obj.docstring.all)
+    docs_array = parser.text.split("\n")
+
+    expect(docs_array).to eq([])
+  end
 end
