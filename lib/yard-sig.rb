@@ -12,6 +12,8 @@ module YardSig
   class SigDirective < ::YARD::Tags::Directive
     # @!sig () -> void
     def call
+      return unless object
+
       validate_arguments_forwarding!
 
       sig = Sig.new(tag.text, object.parameters, object.namespace.path)

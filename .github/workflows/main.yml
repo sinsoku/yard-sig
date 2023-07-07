@@ -27,3 +27,5 @@ jobs:
       run: bundle exec rake
     - name: Run yard with yard-sig
       run: bundle exec yard
+    - name: Run sord
+      run: bundle exec sord --rbs sig/sord.rbs
