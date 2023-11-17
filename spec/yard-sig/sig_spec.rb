@@ -16,10 +16,24 @@ RSpec.describe YardSig::Sig do
       ])
     end
 
+    it "returns a param tag for optional parameter with optional type" do
+      sig = described_class.new("(?Integer? a) -> void")
+      expect(sig.to_tags).to eq_tags([
+        tag(:param, "", ["Integer, nil"], "a")
+      ])
+    end
+
     it "returns a return tag" do
       sig = described_class.new("() -> Integer")
       expect(sig.to_tags).to eq_tags([
         tag(:return, "", ["Integer"])
+      ])
+    end
+
+    it "returns a return tag for optional type" do
+      sig = described_class.new("() -> Integer?")
+      expect(sig.to_tags).to eq_tags([
+        tag(:return, "", ["Integer, nil"])
       ])
     end
 
