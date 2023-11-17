@@ -42,7 +42,7 @@ RSpec.describe YardSig::Sig do
     it "returns a param tag for the keyrest parameter" do
       sig = described_class.new("(**Integer opts) -> void")
       expect(sig.to_tags).to eq_tags([
-        tag(:param, "", ["Hash<Symbol, Integer>"], "opts")
+        tag(:param, "", ["Hash{Symbol => Integer}"], "opts")
       ])
     end
 
@@ -60,7 +60,7 @@ RSpec.describe YardSig::Sig do
       expect(sig.to_tags).to eq_tags([
         tag(:yieldparam, "", ["Integer"], "a"),
         tag(:yieldparam, "", ["Array<Integer>"], "b"),
-        tag(:yieldparam, "", ["Hash<Symbol, Integer>"], "c"),
+        tag(:yieldparam, "", ["Hash{Symbol => Integer}"], "c"),
         tag(:yieldreturn, "", ["String"])
       ])
     end
@@ -72,10 +72,31 @@ RSpec.describe YardSig::Sig do
       ])
     end
 
-    it "returns a param tag with generics" do
+    it "returns a param tag that is an array with generics" do
       sig = described_class.new("(Array[Integer] a) -> void")
       expect(sig.to_tags).to eq_tags([
         tag(:param, "", ["Array<Integer>"], "a")
+      ])
+    end
+
+    it "returns a param tag that is an array with multiple generics" do
+      sig = described_class.new("(Array[Integer|String] a) -> void")
+      expect(sig.to_tags).to eq_tags([
+        tag(:param, "", ["Array<Integer, String>"], "a")
+      ])
+    end
+
+    it "returns a param tag that is a hash with generics" do
+      sig = described_class.new("(Hash[String, Integer] a) -> void")
+      expect(sig.to_tags).to eq_tags([
+        tag(:param, "", ["Hash{String => Integer}"], "a")
+      ])
+    end
+
+    it "returns a param tag that is a hash with multiple generics" do
+      sig = described_class.new("(Hash[String, Integer|String] a) -> void")
+      expect(sig.to_tags).to eq_tags([
+        tag(:param, "", ["Hash{String => Integer, String}"], "a")
       ])
     end
 
@@ -130,7 +151,7 @@ RSpec.describe YardSig::Sig do
       expect(sig.to_tags).to eq_tags([
         tag(:param, "", ["Integer"], "a"),
         tag(:param, "", ["Array<Symbol>"], "b"),
-        tag(:param, "", ["Hash<Symbol, String>"], "c")
+        tag(:param, "", ["Hash{Symbol => String}"], "c")
       ])
     end
   end

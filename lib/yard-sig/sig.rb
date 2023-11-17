@@ -50,7 +50,7 @@ module YardSig
       if kind == :rest
         yard_types = "Array<#{yard_types}>"
       elsif kind == :keyrest
-        yard_types = "Hash<Symbol, #{yard_types}>"
+        yard_types = "Hash{Symbol => #{yard_types}}"
       end
 
       YARD::Tags::Tag.new(tag_name, "", yard_types, name)
@@ -82,8 +82,14 @@ module YardSig
       when RBS::Types::Bases::Instance
         @namespace.to_s
       when RBS::Types::ClassInstance
-        args = type.args.map { |t| to_yard_type(t) }.join(", ")
-        args.empty? ? type.to_s : "#{type.name}<#{args}>"
+        args = type.args.map { |t| to_yard_type(t) }
+        if args.empty?
+          type.to_s
+        elsif type.name.name == :Hash
+          "#{type.name}{#{args[0]} => #{args[1]}}"
+        else
+          "#{type.name}<#{args.join(", ")}>"
+        end
       else
         type.to_s
       end
