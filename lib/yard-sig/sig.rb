@@ -81,6 +81,8 @@ module YardSig
         "Boolean"
       when RBS::Types::Bases::Instance
         @namespace.to_s
+      when RBS::Types::Optional
+        "#{to_yard_type(type.type)}, nil"
       when RBS::Types::ClassInstance
         args = type.args.map { |t| to_yard_type(t) }
         if args.empty?
