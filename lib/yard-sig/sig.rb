@@ -25,12 +25,16 @@ module YardSig
       @rbs_method_type ||= RBS::Parser.parse_method_type(@source)
     end
 
-    def rbs_type_to_tags(rbs_type, within_block: false)
+    def rbs_type_to_tags(rbs_type, within_block: false) # rubocop:disable Metrics/AbcSize
       positionals = rbs_type.required_positionals + rbs_type.optional_positionals
 
       tags = positionals.map.with_index do |param, i|
         build_param_tag(param, :positionals, pos: i, within_block: within_block)
       end
+
+      tags += rbs_type.required_keywords.map { |name, type| build_param_tag_for_keyword(name, type) }
+      tags += rbs_type.optional_keywords.map { |name, type| build_param_tag_for_keyword(name, type) }
+
       tags << build_param_tag(rbs_type.rest_positionals, :rest, within_block: within_block)
       tags << build_param_tag(rbs_type.rest_keywords, :keyrest, within_block: within_block)
       tags << build_return_tag(rbs_type.return_type, within_block: within_block)
@@ -54,6 +58,13 @@ module YardSig
       end
 
       YARD::Tags::Tag.new(tag_name, "", yard_types, name)
+    end
+
+    def build_param_tag_for_keyword(name, type)
+      yard_types = to_yard_type(type.type)
+      return unless yard_types
+
+      YARD::Tags::Tag.new(:param, "", yard_types, name.to_s)
     end
 
     def build_return_tag(type, within_block: false)
