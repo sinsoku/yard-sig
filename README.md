@@ -1,4 +1,5 @@
 [![Gem Version](https://badge.fury.io/rb/yard-sig.svg)](https://badge.fury.io/rb/yard-sig)
+[![test](https://github.com/sinsoku/yard-sig/actions/workflows/test.yml/badge.svg)](https://github.com/sinsoku/yard-sig/actions/workflows/test.yml)
 
 # yard-sig
 
