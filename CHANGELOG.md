@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.2.2] - 2024-01-15
+
+- fix: support keyword arguments
+
 ## [0.2.1] - 2024-01-08
 
 - fix: use the hash specific syntax
