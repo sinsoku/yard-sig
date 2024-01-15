@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/yard-sig.svg)](https://badge.fury.io/rb/yard-sig)
+
 # yard-sig
 
 A YARD plugin for writing documentations with [RBS syntax](https://github.com/ruby/rbs).
