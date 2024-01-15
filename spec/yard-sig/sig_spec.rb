@@ -60,6 +60,14 @@ RSpec.describe YardSig::Sig do
       ])
     end
 
+    it "returns param tags for the keyword arguments" do
+      sig = described_class.new("(x: Integer, ?y: Integer) -> void")
+      expect(sig.to_tags).to eq_tags([
+        tag(:param, "", ["Integer"], "x"),
+        tag(:param, "", ["Integer"], "y")
+      ])
+    end
+
     it "returns a param tag for the block parameter" do
       sig = described_class.new("() { (Integer a) -> String } -> Integer")
       expect(sig.to_tags).to eq_tags([
