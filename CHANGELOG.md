@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.2.3] - 2024-02-07
+
+- fix: fix invalid tags when specifying multiple types
+
 ## [0.2.2] - 2024-01-15
 
 - fix: support keyword arguments
