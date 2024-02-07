@@ -52,9 +52,9 @@ module YardSig
       name = type.name ? type.name.to_s : find_name_from_yard(kind, pos)
 
       if kind == :rest
-        yard_types = "Array<#{yard_types}>"
+        yard_types = "Array<#{yard_types.join(", ")}>"
       elsif kind == :keyrest
-        yard_types = "Hash{Symbol => #{yard_types}}"
+        yard_types = "Hash{Symbol => #{yard_types.join(", ")}}"
       end
 
       YARD::Tags::Tag.new(tag_name, "", yard_types, name)
@@ -82,29 +82,31 @@ module YardSig
       when RBS::Types::Bases::Void, RBS::Types::Bases::Any, RBS::Types::Bases::Bottom
         nil
       when RBS::Types::Bases::Top
-        "Object"
+        ["Object"]
       when RBS::Types::Union
-        type.types.map { |t| to_yard_type(t) }.join(", ")
+        type.types.map { |t| to_yard_type(t) }
       when RBS::Types::Tuple
         args = type.types.map { |t| to_yard_type(t) }.join(", ")
-        "Array[#{args}]"
+        ["Array[#{args}]"]
       when RBS::Types::Bases::Bool
-        "Boolean"
+        ["Boolean"]
       when RBS::Types::Bases::Instance
-        @namespace.to_s
+        [@namespace.to_s]
       when RBS::Types::Optional
-        "#{to_yard_type(type.type)}, nil"
+        [to_yard_type(type.type).join(", ").to_s, "nil"]
       when RBS::Types::ClassInstance
         args = type.args.map { |t| to_yard_type(t) }
         if args.empty?
-          type.to_s
+          [type.to_s]
         elsif type.name.name == :Hash
-          "#{type.name}{#{args[0]} => #{args[1]}}"
+          key = args[0].join(", ")
+          value = args[1].join(", ")
+          ["#{type.name}{#{key} => #{value}}"]
         else
-          "#{type.name}<#{args.join(", ")}>"
+          ["#{type.name}<#{args.join(", ")}>"]
         end
       else
-        type.to_s
+        [type.to_s]
       end
     end
 
